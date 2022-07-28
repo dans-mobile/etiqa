@@ -1,5 +1,8 @@
-class Product {
+import 'package:equatable/equatable.dart';
+
+class Product extends Equatable {
   Product({
+    required this.id,
     required this.name,
     required this.childPlans,
     this.dependants,
@@ -8,9 +11,14 @@ class Product {
   String name;
   List<ChildPlan>? childPlans;
   List<Dependant>? dependants;
+  int id;
+
+  @override
+  List<Object> get props => [id];
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         name: json["name"],
+        id: json["id"],
         childPlans: json["childPlans"] != null
             ? List<ChildPlan>.from(
                 json["childPlans"].map((x) => ChildPlan.fromJson(x)))
@@ -22,6 +30,7 @@ class Product {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "name": name,
         "childPlans": childPlans != null
             ? List<dynamic>.from(
@@ -62,7 +71,7 @@ class ChildPlan {
         minPremium: json["minPremium"],
         maxPremium: json["maxPremium"],
         minSum: json["minSum"],
-        maxSum: json["maxSum"],
+        maxSum: json["maxSum"] ?? 0,
         selectedPremium: json["selectedPremium"],
         selectedSum: json["selectedSum"] ?? json["minSum"],
       );
@@ -74,7 +83,7 @@ class ChildPlan {
         "minSum": minSum,
         "maxSum": maxSum,
         "selectedPremium": selectedPremium,
-        "selectedSum": selectedSum,
+        "selectedSum": selectedSum ?? 0,
       };
 }
 

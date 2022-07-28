@@ -1,13 +1,21 @@
 import 'package:etiqa/const.dart';
 import 'package:etiqa/model/plan_model.dart';
+import 'package:etiqa/view/edit/edit_child_view.dart';
+import 'package:etiqa/view/edit/edit_dependant_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
-class DetailsView extends StatelessWidget {
+class DetailsView extends StatefulWidget {
   final Product product;
   const DetailsView({Key? key, required this.product}) : super(key: key);
 
+  @override
+  State<DetailsView> createState() => _DetailsViewState();
+}
+
+class _DetailsViewState extends State<DetailsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,18 +35,43 @@ class DetailsView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 5.h),
-                Text(
-                  "Child Plans",
-                  style: GoogleFonts.montserrat(
-                      fontSize: 18, fontWeight: FontWeight.w500),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Child Plans",
+                      style: GoogleFonts.montserrat(
+                          fontSize: 18, fontWeight: FontWeight.w500),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        await Get.to(
+                          () => EditChildPlanView(
+                            childPlans: widget.product.childPlans!,
+                          ),
+                        );
+
+                        setState(() {});
+                      },
+                      child: Text(
+                        "Edit Form",
+                        style: GoogleFonts.montserrat(
+                          color: Colors.blueAccent,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
                 SizedBox(height: 1.h),
                 Card(
                   child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: product.childPlans?.length,
+                      itemCount: widget.product.childPlans?.length,
                       itemBuilder: (context, index) {
-                        ChildPlan? childPlan = product.childPlans![index];
+                        ChildPlan? childPlan =
+                            widget.product.childPlans![index];
                         return Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
@@ -81,22 +114,48 @@ class DetailsView extends StatelessWidget {
                 ),
                 SizedBox(height: 5.h),
                 Visibility(
-                  visible: product.dependants != null &&
-                      product.dependants!.isNotEmpty,
-                  child: Text(
-                    "Dependants",
-                    style: GoogleFonts.montserrat(
-                        fontSize: 18, fontWeight: FontWeight.w500),
+                  visible: widget.product.dependants != null &&
+                      widget.product.dependants!.isNotEmpty,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Dependants",
+                        style: GoogleFonts.montserrat(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          await Get.to(
+                            () => EditDependantView(
+                              dependents: widget.product.dependants!,
+                            ),
+                          );
+
+                          setState(() {});
+                        },
+                        child: Text(
+                          "Edit Dependant",
+                          style: GoogleFonts.montserrat(
+                            color: Colors.blueAccent,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 SizedBox(height: 1.h),
-                product.dependants != null && product.dependants!.isNotEmpty
+                widget.product.dependants != null &&
+                        widget.product.dependants!.isNotEmpty
                     ? Card(
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: product.dependants?.length,
+                            itemCount: widget.product.dependants?.length,
                             itemBuilder: (context, index) {
-                              Dependant? dependant = product.dependants![index];
+                              Dependant? dependant =
+                                  widget.product.dependants![index];
                               return Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Column(
@@ -113,7 +172,7 @@ class DetailsView extends StatelessWidget {
                                           style: GoogleFonts.montserrat(),
                                         ),
                                         Text(
-                                          "RM ${dependant.age}",
+                                          "${dependant.age}",
                                           style: GoogleFonts.montserrat(
                                               fontWeight: FontWeight.w700),
                                         ),
