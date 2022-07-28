@@ -39,6 +39,8 @@ dependencies:
   sizer: ^2.0.15
   modal_bottom_sheet: ^2.1.0
   get_storage: ^2.0.3
+  uuid: ^3.0.6
+  equatable: ^2.0.3
 
 dev_dependencies:
   flutter_test:

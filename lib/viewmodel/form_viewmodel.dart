@@ -47,7 +47,12 @@ class FormViewModel extends GetxController {
   }
 
   void generateProduct() {
+    int id = DateTime.now().microsecondsSinceEpoch;
+
+    print("id: $id");
+
     Product product = Product(
+        id: id,
         name: selectedProduct,
         childPlans: selectedChildPlans,
         dependants: selectedDependents);

@@ -2,6 +2,7 @@ import 'package:etiqa/const.dart';
 import 'package:etiqa/model/plan_model.dart';
 import 'package:etiqa/view/details_view.dart';
 import 'package:etiqa/view/form_view.dart';
+import 'package:etiqa/viewmodel/form_viewmodel.dart';
 import 'package:etiqa/viewmodel/main_page_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ class MainPageView extends StatelessWidget {
   MainPageView({Key? key}) : super(key: key);
 
   final viewmodel = Get.put(MainPageViewModel());
+  final formViewModel = Get.put(FormViewModel());
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +72,17 @@ class MainPageView extends StatelessWidget {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.black),
-                      onPressed: (() => Get.to(() => DetailsView(
+                      onPressed: (() async {
+                        await Get.to(
+                          () => DetailsView(
                             product: product,
-                          ))),
+                          ),
+                        );
+
+                        formViewModel.saveList(viewmodel.products);
+
+                        viewmodel.update();
+                      }),
                       child: Text(
                         "View Details",
                         style: GoogleFonts.montserrat(

@@ -9,6 +9,8 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final TextInputType? textInputType;
+  final String? initialValue;
+  final Function(String?)? onChanged;
 
   const CustomTextField({
     Key? key,
@@ -17,6 +19,8 @@ class CustomTextField extends StatefulWidget {
     this.controller,
     this.validator,
     this.textInputType,
+    this.initialValue,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -27,6 +31,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: widget.onChanged,
+      initialValue: widget.initialValue,
       controller: widget.controller,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: widget.validator,

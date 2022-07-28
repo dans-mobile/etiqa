@@ -14,6 +14,10 @@ class MainPageViewModel extends GetxController {
   final box = GetStorage();
   List<Product> products = [];
 
+  clearBox() {
+    box.remove("saveList");
+  }
+
   retrieveProducts() async {
     products.clear();
     var json = await box.read("saveList");
@@ -27,9 +31,12 @@ class MainPageViewModel extends GetxController {
     if (saveList != null) oldSavedList = saveList;
 
     if (oldSavedList.isNotEmpty) {
+      List<Product> nonFilter = [];
       for (var e in oldSavedList) {
-        products.add(Product.fromJson(e));
+        nonFilter.add(Product.fromJson(e));
       }
+
+      products = nonFilter.reversed.toSet().toList();
 
       refresh();
     }
